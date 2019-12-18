@@ -7,10 +7,10 @@ choosen_func_no = "1 "
 #generate test a b m
 LIMIT=2**63-1
 wrong_num=0
-for i in range(1000):
+for i in range(5):
     a=random.randint(0,LIMIT)
     b=random.randint(0,LIMIT)
-    m=random.randint(1,LIMIT)
+    m=random.randint(1,2**63-1)
 
     whole_command ="/home/qile/ics-workbench/multimod/main -i "+\
                    choosen_func_no+str(a)+" "+str(b)+" "+str(m)
@@ -24,4 +24,5 @@ for i in range(1000):
               +"my_result:"+str(my_result)+"\n"\
               +"right result:"+str(a*b%m)+"\n")
     
-print("in 1000 tests, right times are:"+str(1000-wrong_num)+ " wrong times are:"+str(wrong_num)+"\n")
+print("in 5 tests, right times are:"+str(5-wrong_num)+\
+      " wrong times are:"+str(wrong_num)+"\n")
