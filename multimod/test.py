@@ -23,6 +23,10 @@ for i in range(1000):
               +str(a)+" * "+str(b)+" % "+str(m)+"\n"\
               +"my_result:"+str(my_result)+"\n"\
               +"right result:"+str(a*b%m)+"\n")
-    
+    else:
+        print("right result: "+"\n"\
+              +"for a:"+str(a)+" b:"+str(b)+" m:"+str(m)+"\n"\
+              +" result:"+str(my_result)+"\n")
+              
 print("in 1000 tests, right times are:"+str(1000-wrong_num)+\
       " wrong times are:"+str(wrong_num)+"\n")
