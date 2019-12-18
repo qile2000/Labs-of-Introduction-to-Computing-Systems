@@ -13,7 +13,7 @@ for i in range(1000):
     m=random.randint(1,LIMIT)
     whole_command ="/home/qile/ics-workbench/multimod/main -i "+choosen_func_no+str(a)+" "+str(b)+" "+str(m)
     opened_file=os.popen(whole_command)
-    my_result=opened_file.readlines[0].strip()
+    my_result=opened_file.readlines()[0].strip()
     if(int(my_result)!=a*b%m):
         wrong_num=wrong_num+1
         print("wrong result: "+str(a)+"*"+str(b)+"%"+str(m)+"my_result:"+str(my_result)+" right result:"+str(a*b%m)+"\n")
