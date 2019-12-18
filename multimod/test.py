@@ -2,12 +2,12 @@ import random
 import os
 
 #p1, p2 or p3
-choosen_func_no = "1 "
+choosen_func_no = "2 "
 
 #generate test a b m
 LIMIT=2**63-1
 wrong_num=0
-for i in range(5):
+for i in range(1000):
     a=random.randint(0,LIMIT)
     b=random.randint(0,LIMIT)
     m=random.randint(1,2**63-1)
@@ -24,5 +24,5 @@ for i in range(5):
               +"my_result:"+str(my_result)+"\n"\
               +"right result:"+str(a*b%m)+"\n")
     
-print("in 5 tests, right times are:"+str(5-wrong_num)+\
+print("in 1000 tests, right times are:"+str(1000-wrong_num)+\
       " wrong times are:"+str(wrong_num)+"\n")
