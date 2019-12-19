@@ -2,6 +2,7 @@
 #include <getopt.h>
 #include <stdlib.h>
 #include "multimod.h"
+#include <time.h>
 
 static struct option long_option[] = {
   { "i", required_argument, NULL, 'i' },
@@ -39,7 +40,9 @@ int main(int argc, char *argv[]) {
   a = strtoll(argv[optind], NULL, 10);
   b = strtoll(argv[optind + 1], NULL, 10);
   m = strtoll(argv[optind + 2], NULL, 10);
-
+  int64_t begin_time = clock();
   int64_t ret = func(a, b, m);
-  printf("%ld\n", ret);
+  int64_t end_time = clock();
+  int64_t run_time = end_time - begin_time;
+  printf("%ld\n%ld\n", ret, run_time);
 }

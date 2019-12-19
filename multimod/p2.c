@@ -4,13 +4,23 @@ int64_t multimod_p2(int64_t a, int64_t b, int64_t m) {
 
   int64_t result=0;
 
+  if(a<b){
+    int64_t temp = a;
+    a=b;
+    b=temp;
+  }
+  
+  if((a < (int64_t)1<<31) && (b < (int64_t)1<<31)){
+    return a*b%m;
+  }
+
   if (a>=m) {
     a%=m;   
   }
   if (b>=m) {
     b%=m;  
   }
-
+  
   if(m< ((int64_t)1<< 62)){
     while (b) {
       if (b&1) {
