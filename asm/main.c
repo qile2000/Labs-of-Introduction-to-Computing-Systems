@@ -16,11 +16,6 @@ int main() {
   assert(asm_popcnt(0xffffffffffffffffull) == 64);
   printf("YEAH, PASS TEST ADD and POPCNT!\n");
 
-  char _src[10]="123456789";
-	char _dst[20]="0";
-	printf("%s\n", _dst);
-  assert(asm_memcpy(_dst, _src, 10) == _dst);
-	printf("%s\n", _dst);
   // TODO: add memcpy tests here!
   char* src="The first NJU!!!";
   char dest1[30];
