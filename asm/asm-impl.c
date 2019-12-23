@@ -88,7 +88,7 @@ int asm_setjmp(asm_jmp_buf env) {
     "mov     $0,         %0\n"          // 置0返回
     :"=r"(val)
     :
-    :"memory"
+    :"memory","%rbp"
   );
   return val;
 }
@@ -118,6 +118,6 @@ void asm_longjmp(asm_jmp_buf env, int val) {
     "jmpq    *8(%%rdi)\n"           //存的pc
     :
     :
-    :"memory"
+    :"memory","%rbp"
   );
 }
