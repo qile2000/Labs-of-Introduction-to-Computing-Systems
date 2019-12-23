@@ -2,7 +2,7 @@
 #include <unistd.h>
 
 // TODO: set correct array length
-typedef uintptr_t asm_jmp_buf[64];
+typedef uintptr_t asm_jmp_buf[8];
 /*
 0	%rbx  数据存储
 8 	pc
