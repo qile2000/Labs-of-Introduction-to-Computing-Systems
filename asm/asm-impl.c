@@ -57,55 +57,65 @@ void *asm_memcpy(void *dest, const void *src, size_t n) {
 }
 
 /*
-0	  %rbx  数据存储
-8 	%rbp \            (8)
-16	%r12  \           (10)
-24	%r13    数据存储   (18)
-32	%r14  /           (20)
-40	%r15 /            (28)
+0	  %rbx  
+8 	pc
+16	%r12              (10)
+24	%r13              (18)
+32	%r14              (20)
+40	%r15              (28)
 48  %rsp              (30)
-56  pc  返回地址       (38)
+56  %rbp
 */
 int asm_setjmp(asm_jmp_buf env) {
   int val;
   asm volatile(
-    "movq    %%rbx,     0(%%rdi)\n"     //将rbx, rbp, r12, r13, r14. r15, rsp放进env
-    "movq    %%rbp,     8(%%rdi)\n"
-    "movq    %%r12,     16(%%rdi)\n"
-    "movq    %%r13,     24(%%rdi)\n"
-    "movq    %%r14,     32(%%rdi)\n"
-    "movq    %%r15,     40(%%rdi)\n"
-    "movq    %%rsp,     48(%%rdi)\n" 
+    "movq    %%rbx,      0(%%rdi)\n"     
 
-    "movq    0(%%rsp),   %%rdx\n"       // rdx暂时存放, 把返回地址（%rsp)放进env保存
-    "movq    %%rdx,     56(%%rdi)\n" 
+    "movq    8(%%rsp),   %%rdx\n"
+    "movq    %%rdx,      8(%%rdi)\n"    //pc
 
-    "mov    $0,     %0\n"               // 置0返回
+    "movq    %%r12,      16(%%rdi)\n"
+    "movq    %%r13,      24(%%rdi)\n"
+    "movq    %%r14,      32(%%rdi)\n"
+    "movq    %%r15,      40(%%rdi)\n"
+
+    "lea     0x10(%%rsp),%%rdx\n"       //rsp
+    "movq    %%rdx,      48(%%rdi)\n"
+
+    "movq    0(%%rsp),   %%rdx\n"       
+    "movq    %%rdx,      56(%%rdi)\n"   //rbp
+
+    "mov     $0,         %0\n"          // 置0返回
     :"=r"(val)
     :
     :"memory"
   );
   return val;
 }
-
+/*
+0	  %rbx  数据存储
+8 	pc
+16	%r12 \            
+24	%r13  \  数据存储  
+32	%r14  /           
+40	%r15 /            
+48  %rsp              
+56  %rbp
+*/
 void asm_longjmp(asm_jmp_buf env, int val) {
   asm volatile(
     "movq    (%%rdi),    %%rbx\n"
-    "movq    8(%%rdi),   %%rbp\n"
     "movq    16(%%rdi),  %%r12\n"
     "movq    24(%%rdi),  %%r13\n"
     "movq    32(%%rdi),  %%r14\n"
     "movq    40(%%rdi),  %%r15\n"
     "movq    48(%%rdi),  %%rsp\n"    
 
-    "movq    56(%%rdi),  %%rdx\n"    //rdx暂时存放之前保存的返回地址（%rsp)
-    "movq    %%rdx,      (%%rsp)\n"
-    
+    "movq    56(%%rdi),  %%rbp\n"
+
     "movl    %%esi,      %%eax\n"
-    "testl   %%eax,      %%eax\n"    // cannot be 0
-    "jnz     .L\n"
-    "movl    $1,         %%eax\n"
-    ".L:     ret\n"
+    
+    "jmpq    *8(%%rdi)\n"           //存的pc
     :
     :
     :"memory"

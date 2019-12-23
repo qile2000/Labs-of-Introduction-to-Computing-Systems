@@ -5,13 +5,13 @@
 typedef uintptr_t asm_jmp_buf[64];
 /*
 0	%rbx  数据存储
-8 	%rbp \
-16	%r12  \
-24	%r13    数据存储
-32	%r14  /
-40	%r15 /
-48  %rsp  栈指针寄存器
-56  pc    返回地址
+8 	pc
+16	%r12 \            
+24	%r13  \  数据存储  
+32	%r14  /           
+40	%r15 /            
+48  %rsp              
+56  %rbp
 */
 int64_t asm_add(int64_t a, int64_t b);
 int asm_popcnt(uint64_t x);
