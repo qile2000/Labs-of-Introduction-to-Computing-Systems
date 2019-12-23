@@ -21,7 +21,7 @@ std = timedata['runtime(Microsecond)'].std()
 print(stats.kstest(timedata['runtime(Microsecond)'],\
       'norm', (u, std)))
 # if p > 0.05, it is norm
-'''
+
 #figure
 plt.bar(timedata.index, timedata["runtime(Microsecond)"])
 plt.ylabel("runtime(Microsecond)")
@@ -42,7 +42,7 @@ if(function=="multimod_p1" or\
     plt.xlabel("a,b,m")
     plt.ylabel("runtime(Microsecond)")
     plt.show()
-'''
+
 #a,b bin 1
 if(function=="multimod_p1" or\
    function=="multimod_p2" or\

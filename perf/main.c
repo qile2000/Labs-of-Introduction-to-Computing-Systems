@@ -10,7 +10,6 @@
 
 PROGRAMS(DECL)
 
-double MS_PER_SEC = 1000;
 char function[30];
 
 int64_t rand_64_bit();
@@ -29,7 +28,7 @@ int main(int argc, char **argv) {
     return -1;
   }
   int rounds=1;
-  if(argc==2){
+  if(argc==3){
     strcpy(function,argv[2]);
   }
   else{
@@ -39,7 +38,7 @@ int main(int argc, char **argv) {
     }
     int num=atoi(argv[3]);
     if(num<=0){
-      printf("rounds num should > 0\n");
+      printf("rounds num should be number which > 0\n");
       return -1;
     }
     rounds=num;
@@ -123,7 +122,7 @@ int64_t rand_64_bit() {
 
   long long answer = (long long)e*f;
 
-  return a;
+  return answer;
 }
 
 void gen_rand_abm(){
