@@ -18,6 +18,7 @@ void cycle_increase(int n) { cycle_cnt += n; }
 // 若缺失, 需要先从内存中读入数据
 uint32_t cache_read(uintptr_t addr) {
   //匹配tag并检查有效位
+  /*
   if(find_tag(addr)){
     read_cache(addr);
   }
@@ -32,6 +33,7 @@ uint32_t cache_read(uintptr_t addr) {
     }
   }
   return 0;
+  */
 }
 
 // 往cache中`addr`地址所属的块写入数据`data`, 写掩码为`wmask`
