@@ -2,6 +2,12 @@
 
 #define addr_offset_bit(addr) (((addr) & 0x3) * 8)
 
+//一套 CPU 接口 cpu_read() 和 cpu_write(), 
+//会调用你实现的 cache_read() 和 cache_write(). 
+//uncache 的接口 cpu_uncache_read() 和 cpu_uncache_write(), 
+//用于直接访问另一个独立的内存. 这样是为了对实现进行对比测试
+
+
 uint32_t cache_read(uintptr_t addr);
 void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask);
 uint32_t mem_uncache_read(uintptr_t addr);
