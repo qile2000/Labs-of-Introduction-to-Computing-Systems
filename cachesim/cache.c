@@ -81,7 +81,7 @@ uint32_t cache_read(uintptr_t addr) {
   //命中
   if(find_hit_line>=0){
     ret_addr = (void *)whole_cache[cache_group_label][find_hit_line].BLOCK +
-               ((addr & (ex2(BLOCK_WIDTH)-1)) & ~0x3);                ///////////////////////////
+               ((addr & (exp2(BLOCK_WIDTH)-1)) & ~0x3);                ///////////////////////////
   }
   //未命中
   else{
