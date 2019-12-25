@@ -45,7 +45,7 @@ uint32_t* update_cacheline(uintptr_t addr, uint32_t group_label, uint32_t line){
 	whole_cache[group_label][line].block_label = (addr >> mm_block_addr_bit);
 	mem_read(addr>>BLOCK_WIDTH,whole_cache[group_label][line].BLOCK);
 	ret_addr = (void *)whole_cache[group_label][line].BLOCK +
-             ((addr & (ex2(BLOCK_WIDTH)-1)) & ~0x3); 
+             ((addr & (exp2(BLOCK_WIDTH)-1)) & ~0x3); 
   return ret_addr;
 }
 
