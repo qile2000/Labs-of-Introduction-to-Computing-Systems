@@ -50,7 +50,7 @@ uint32_t* update_cacheline(uintptr_t addr, uint32_t group_label, uint32_t line){
 }
 
 //随机替换
-uint32_t* rand_replace(uintptr_t addr, uint32_t group_label, uint32_t line){
+uint32_t* rand_replace_line(uintptr_t addr, uint32_t group_label, uint32_t line){
   //未被修改过，直接替换
   if (whole_cache[group_label][line].dirty_bit == false){
     return update_cacheline(addr, group_label, line);
