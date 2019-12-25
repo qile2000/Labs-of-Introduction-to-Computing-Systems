@@ -25,7 +25,12 @@ uint32_t cache_datazone_size;//cache数据容量
 uint32_t cache_lines_per_group;//每组的行数
 
 uint32_t cache_group_num_width;
-uint32_t cache_group_num;//cache的组数
+uint32_t cache_group_num;//cache的组数     
+uint32_t cache_group_num_bit;//cache组号位
+
+uint32_t cache_block_addr_bit;//cache的块内地址位数    
+
+uint32_t cache_tag_bit;//cache的标记位
 
 //主存空间1MB
 //MEM_SIZE = 组群数 × 每个组群的块数 × BLOCK_SIZE
@@ -37,7 +42,7 @@ uint32_t block_total_num;//主存总块数
 uint32_t mm_group_num_width;
 uint32_t mm_group_num;//主存组群数
 
-uint32_t mm_group_group_label_bit;//主存地址中组号位数
+uint32_t mm_group_label_bit;//主存地址中组号位数
 
 uint32_t mm_block_addr_bit;//主存块内地址位数
 
