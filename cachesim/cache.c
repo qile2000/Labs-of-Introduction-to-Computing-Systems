@@ -58,7 +58,7 @@ uint32_t* rand_replace_line(uintptr_t addr, uint32_t group_label, uint32_t line)
   //被修改过，先写回，再替换
   else{
     mem_write(whole_cache[group_label][line].block_label, whole_cache[group_label][line].BLOCK);
-    whole_cache[group_label][line].dirty_bit == false;
+    whole_cache[group_label][line].dirty_bit = false;
     return update_cacheline(addr, group_label, line);
   }
 }
