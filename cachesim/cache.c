@@ -1,5 +1,6 @@
 #include "common.h"
 #include <inttypes.h>
+#include <string.h>
 //主存地址： 标记；cache组号；块内地址
 
 
@@ -34,6 +35,8 @@ uint32_t cache_read(uintptr_t addr) {
   }
   return 0;
   */
+  return 0;
+  
 }
 
 // 往cache中`addr`地址所属的块写入数据`data`, 写掩码为`wmask`
