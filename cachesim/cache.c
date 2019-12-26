@@ -15,7 +15,6 @@ void mem_write(uintptr_t block_num, const uint8_t *buf);
 static uint64_t cycle_cnt = 0;
 static uint64_t hit_cnt = 0;
 static uint64_t miss_cnt = 0;
-static uint64_t write_back_cnt = 0;
 static uint64_t find_hit_cnt = 0;
 static uint64_t find_empty_cnt = 0;
 static uint64_t cache_miss_cost = 0;
