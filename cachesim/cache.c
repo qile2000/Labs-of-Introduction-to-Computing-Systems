@@ -13,8 +13,13 @@ void mem_read(uintptr_t block_num, uint8_t *buf);
 void mem_write(uintptr_t block_num, const uint8_t *buf);
 
 static uint64_t cycle_cnt = 0;
+static uint64_t hit_cnt = 0;
+static uint64_t miss_cnt = 0;
 
 void cycle_increase(int n) { cycle_cnt += n; }
+void hit_increase(int n) { hit_cnt += n; }
+void miss_increase(int n) { miss_cnt += n; }
+
 
 //是否有匹配的有效tag
 int32_t find_hit_tag(uintptr_t addr, uint32_t group_label, uint32_t mm_tag){
@@ -78,10 +83,11 @@ uint32_t cache_read(uintptr_t addr) {
 
   //匹配tag并检查有效位
   int32_t find_hit_line = find_hit_tag(addr,cache_group_label,mm_tag);
+
   //命中
   if(find_hit_line>=0){
     ret_addr = (void *)whole_cache[cache_group_label][find_hit_line].BLOCK +
-               ((addr & (exp2(BLOCK_WIDTH)-1)) & ~0x3);                ///////////////////////////
+               ((addr & (exp2(BLOCK_WIDTH)-1)) & ~0x3);          
   }
   //未命中
   else{
