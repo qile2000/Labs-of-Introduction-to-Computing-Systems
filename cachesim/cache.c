@@ -66,7 +66,6 @@ uint32_t* rand_replace_line(uintptr_t addr, uint32_t group_label, uint32_t line)
 // 从cache中读出`addr`地址处的4字节数据
 // 若缺失, 需要先从内存中读入数据
 uint32_t cache_read(uintptr_t addr) {
-  printf("cache_read\n");
   //主存地址： 标记；cache组号；块内地址
   //          13 ;    6    ;   6
   uint32_t* ret_addr=NULL;
