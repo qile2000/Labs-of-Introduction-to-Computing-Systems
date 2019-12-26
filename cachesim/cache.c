@@ -17,7 +17,7 @@ static uint64_t cycle_cnt = 0;
 void cycle_increase(int n) { cycle_cnt += n; }
 
 //是否有匹配的有效tag
-uint32_t find_hit_tag(uintptr_t addr, uint32_t group_label, uint32_t mm_tag){
+int32_t find_hit_tag(uintptr_t addr, uint32_t group_label, uint32_t mm_tag){
   for(int i=0; i<cache_lines_per_group; i++){
     if((mm_tag==whole_cache[group_label][i].tag_bit) &&
        (whole_cache[group_label][i].valid_bit==1)){
@@ -28,7 +28,7 @@ uint32_t find_hit_tag(uintptr_t addr, uint32_t group_label, uint32_t mm_tag){
 }
 
 //组内是否有空闲行
-uint32_t find_empty(uintptr_t addr, uint32_t group_label){
+int32_t find_empty(uintptr_t addr, uint32_t group_label){
   for (int i=0; i<cache_lines_per_group; i++){
 		if (whole_cache[group_label][i].valid_bit==false) {
       return i;
@@ -78,7 +78,7 @@ uint32_t cache_read(uintptr_t addr) {
   uint32_t mm_tag = addr >> (mm_block_addr_bit+mm_group_label_bit);
 
   //匹配tag并检查有效位
-  uint32_t find_hit_line = find_hit_tag(addr,cache_group_label,mm_tag);
+  int32_t find_hit_line = find_hit_tag(addr,cache_group_label,mm_tag);
   //命中
   if(find_hit_line>=0){
     ret_addr = (void *)whole_cache[cache_group_label][find_hit_line].BLOCK +
@@ -86,7 +86,7 @@ uint32_t cache_read(uintptr_t addr) {
   }
   //未命中
   else{
-    uint32_t find_empty_line = find_empty(addr, cache_group_label);
+    int32_t find_empty_line = find_empty(addr, cache_group_label);
     //组中有空行
     if(find_empty_line>=0){
       ret_addr = update_cacheline(addr,cache_group_label,find_empty_line);   
@@ -118,17 +118,17 @@ void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
   printf("group_label: %d\n",cache_group_label);
   uint32_t mm_tag = addr >> (mm_block_addr_bit+mm_group_label_bit);
   printf("mm_tag: %d\n",mm_tag);
-  uint32_t find_hit_line = find_hit_tag(addr,cache_group_label,mm_tag);
+  int32_t find_hit_line = find_hit_tag(addr,cache_group_label,mm_tag);
   printf("find_lit_line: %d\n", find_hit_line);
   //命中
   if(find_hit_line>=0){
-    printf("hit %d\n",find_hit_line);
+    printf("hit\n");
     write_data(addr, cache_group_label, find_hit_line, data, wmask); 
   }
   //缺失
   else{
     printf("miss\n");
-    uint32_t find_empty_line = find_empty(addr, cache_group_label);
+    int32_t find_empty_line = find_empty(addr, cache_group_label);
     printf("find_empty_line: %d",find_empty_line);
     //组中有空行
     if(find_empty_line>=0){
