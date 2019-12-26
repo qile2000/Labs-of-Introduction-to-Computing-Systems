@@ -42,7 +42,7 @@ int32_t find_empty(uintptr_t addr, uint32_t group_label){
   return -1;
 }
 
-//根据地址更新cacheline
+//根据地址更新cache_row
 uint32_t* update_cacheline(uintptr_t addr, uint32_t group_label, uint32_t line){
   uint32_t* ret_addr;
   whole_cache[group_label][line].valid_bit = true;
