@@ -13,7 +13,7 @@
 #define BLOCK_WIDTH  6     // 64B
 #define BLOCK_SIZE exp2(BLOCK_WIDTH)
 
-#define TOTAL_SIZE_WIDTH 10
+#define TOTAL_SIZE_WIDTH 16
 #define ASSOCIATIVITY_WIDTH 2
 
 //命中数量
