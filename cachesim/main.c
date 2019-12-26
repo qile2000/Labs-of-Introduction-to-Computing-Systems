@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
   init_rand(seed);
   init_mem();
 
-  init_cache(CACHE_TOTAL_SIZE_WIDTH, ASSOCIATIVITY_WIDTH);
+  init_cache(TOTAL_SIZE_WIDTH, ASSOCIATIVITY_WIDTH);
 
   replay_trace();
 

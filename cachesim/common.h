@@ -10,10 +10,10 @@
 #define mask_with_len(x) (exp2(x) - 1)
 
 #define MEM_SIZE (1 << 25) // 1MB
-#define BLOCK_WIDTH  6  // 64B
+#define BLOCK_WIDTH  6     // 64B
 #define BLOCK_SIZE exp2(BLOCK_WIDTH)
 
-#define CACHE_TOTAL_SIZE_WIDTH 14
+#define TOTAL_SIZE_WIDTH 14
 #define ASSOCIATIVITY_WIDTH 2
 
 //命中数量
@@ -59,11 +59,11 @@ typedef struct{
   bool valid_bit;           //有效位
   bool dirty_bit;           //脏位
   uint32_t tag_bit;         //标记位
-  uint32_t block_label;     //cache组号
+  uint32_t block_label;     //块号
   uint8_t BLOCK[BLOCK_SIZE];//块大小为 64B 
 } cache_row;
 
-cache_row whole_cache[exp2(CACHE_TOTAL_SIZE_WIDTH-ASSOCIATIVITY_WIDTH-BLOCK_WIDTH)][exp2(ASSOCIATIVITY_WIDTH)];
+cache_row whole_cache[exp2(TOTAL_SIZE_WIDTH-ASSOCIATIVITY_WIDTH-BLOCK_WIDTH)][exp2(ASSOCIATIVITY_WIDTH)];
 
 void cycle_increase(int n);
 
