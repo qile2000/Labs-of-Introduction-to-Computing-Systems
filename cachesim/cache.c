@@ -122,7 +122,7 @@ void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
   printf("find_lit_line: %d\n", find_hit_line);
   //命中
   if(find_hit_line>=0){
-    printf("hit\n");
+    printf("hit %d\n",find_hit_line);
     write_data(addr, cache_group_label, find_hit_line, data, wmask); 
   }
   //缺失
