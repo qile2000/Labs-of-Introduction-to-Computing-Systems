@@ -66,6 +66,7 @@ uint32_t* rand_replace_line(uintptr_t addr, uint32_t group_label, uint32_t line)
 // 从cache中读出`addr`地址处的4字节数据
 // 若缺失, 需要先从内存中读入数据
 uint32_t cache_read(uintptr_t addr) {
+  printf("cache_read\n");
   //主存地址： 标记；cache组号；块内地址
   //          13 ;    6    ;   6
   uint32_t* ret_addr=NULL;
@@ -112,6 +113,7 @@ void write_data(uintptr_t addr, uint32_t group_label, uint32_t line, uint32_t da
 // 例如当`wmask`为`0xff`时, 只写入低8比特
 // 若缺失, 需要从先内存中读入数据
 void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
+  printf("cache_write\n");
   uint32_t cache_group_label= (addr>>mm_block_addr_bit)%mm_group_label_bit;
   uint32_t mm_tag = addr >> (mm_block_addr_bit+mm_group_label_bit);
   uint32_t find_hit_line = find_hit_tag(addr,cache_group_label,mm_tag);
