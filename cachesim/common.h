@@ -10,10 +10,10 @@
 #define mask_with_len(x) (exp2(x) - 1)
 
 #define MEM_SIZE (1 << 25) // 1MB
-#define BLOCK_WIDTH  8     // 64B
+#define BLOCK_WIDTH  6     // 64B
 #define BLOCK_SIZE exp2(BLOCK_WIDTH)
 
-#define TOTAL_SIZE_WIDTH 14
+#define TOTAL_SIZE_WIDTH 22
 #define ASSOCIATIVITY_WIDTH 2
 
 //命中数量
