@@ -100,10 +100,45 @@ uint32_t cache_read(uintptr_t addr) {
   return *ret_addr;
 }
 
+//往cache中写入数据
+void write_data(uintptr_t addr, uint32_t group_label, uint32_t line, uint32_t data, uint32_t wmask){
+  whole_cache[group_label][line].dirty_bit = true;
+  uint32_t *write_addr = (void *)whole_cache[group_label][line].BLOCK + 
+                         ((addr & (exp2(BLOCK_WIDTH)-1)) & ~0x3);   
+	*write_addr = (*write_addr & ~wmask) | (data & wmask);
+}
+
 // 往cache中`addr`地址所属的块写入数据`data`, 写掩码为`wmask`
 // 例如当`wmask`为`0xff`时, 只写入低8比特
 // 若缺失, 需要从先内存中读入数据
 void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
+  uint32_t cache_group_label= (addr>>mm_block_addr_bit)%mm_group_label_bit;
+  uint32_t mm_tag = addr >> (mm_block_addr_bit+mm_group_label_bit);
+  uint32_t find_hit_line = find_hit_tag(addr,cache_group_label,mm_tag);
+  //命中
+  if(find_hit_line>=0){
+    write_data(addr, cache_group_label, find_hit_line, data, wmask); 
+  }
+  //缺失
+  else{
+    uint32_t find_empty_line = find_empty(addr, cache_group_label);
+    //组中有空行
+    if(find_empty_line>=0){
+      whole_cache[cache_group_label][find_empty_line].valid_bit = true;
+	    whole_cache[cache_group_label][find_empty_line].tag_bit = addr >> (mm_group_label_bit+mm_block_addr_bit);
+	    whole_cache[cache_group_label][find_empty_line].block_label = (addr >> mm_block_addr_bit);
+	    mem_read(addr>>BLOCK_WIDTH,whole_cache[cache_group_label][find_empty_line].BLOCK); 
+      write_data(addr, cache_group_label, find_empty_line, data, wmask); 
+    }
+    //组中已满
+    else{
+      srand(clock());
+      uint32_t rand_line = rand()%cache_lines_per_group;
+      uint32_t* temp = NULL;
+      temp = rand_replace_line(addr,cache_group_label,rand_line);
+      write_data(addr, cache_group_label, rand_line, data, wmask); 
+    }
+  }
 }
 
 // 初始化一个数据大小为`2^total_size_width`B, 关联度（主存块对应的cache行的个数，*路组相联）

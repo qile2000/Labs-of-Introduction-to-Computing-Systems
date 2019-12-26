@@ -16,6 +16,9 @@
 #define CACHE_TOTAL_SIZE_WIDTH 14
 #define ASSOCIATIVITY_WIDTH 2
 
+//命中数量
+uint32_t hit_num;
+
 //cache数据区容量：
 //2^total_size_width = (2^6)BLOCK_SIZE(64)字/行 × 2^associativity 行/组 × group_num 组数
 uint32_t B_per_line;//每行字节数
