@@ -203,7 +203,7 @@ void init_cache(int total_size_width, int associativity_width) {
 }
 
 void display_statistic(void) {
-  printf("cache hit count is: %d\n", hit_cnt);
-  printf("cache miss count is: %d\n", miss_cnt);
+  printf("cache hit count is: %ld\n", hit_cnt);
+  printf("cache miss count is: %ld\n", miss_cnt);
   printf("hit rate: %f\n",(float)hit_cnt/(hit_cnt+miss_cnt));
 }
