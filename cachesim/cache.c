@@ -226,5 +226,5 @@ void display_statistic(void) {
   printf("empty judge cost: %ld\n", find_empty_cnt);
   printf("update line cost: %ld\n", update_line_cost);
   printf("cache complex: %ld\n",find_hit_cnt+find_empty_cnt+update_line_cost);
-  printf("cache_miss_cost: %f ms", (double)cache_miss_cost/1000);
+  printf("cache_miss_cost: %f ms\n", (double)cache_miss_cost/1000);
 }
