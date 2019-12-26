@@ -15,16 +15,25 @@ void mem_write(uintptr_t block_num, const uint8_t *buf);
 static uint64_t cycle_cnt = 0;
 static uint64_t hit_cnt = 0;
 static uint64_t miss_cnt = 0;
+static uint64_t write_back_cnt = 0;
+static uint64_t find_hit_cnt = 0;
+static uint64_t find_empty_cnt = 0;
+static uint64_t cache_miss_cost = 0;
+static uint64_t update_line_cost = 0;
 
 void cycle_increase(int n) { cycle_cnt += n; }
 void hit_increase(int n) { hit_cnt += n; }
 void miss_increase(int n) { miss_cnt += n; }
-
+void find_hit_increase(int n) { find_hit_cnt+=n;}
+void find_empty_increase(int n) {find_empty_cnt+=n; }
+void cache_miss_cost_increase(int n) {cache_miss_cost+=n;}
+void update_line_cost_increase(int n) {update_line_cost+=n;}
 
 //是否有匹配的有效tag
 int32_t find_hit_tag(uintptr_t addr, uint32_t group_label, uint32_t mm_tag){
-  cycle_increase(cache_lines_per_group);
+  
   for(int i=0; i<cache_lines_per_group; i++){
+    find_hit_increase(2);
     if((mm_tag==whole_cache[group_label][i].tag_bit) &&
        (whole_cache[group_label][i].valid_bit==1)){
       return i;
@@ -35,7 +44,9 @@ int32_t find_hit_tag(uintptr_t addr, uint32_t group_label, uint32_t mm_tag){
 
 //组内是否有空闲行
 int32_t find_empty(uintptr_t addr, uint32_t group_label){
+  
   for (int i=0; i<cache_lines_per_group; i++){
+    find_empty_increase(1);
 		if (whole_cache[group_label][i].valid_bit==false) {
       return i;
 		}
@@ -45,6 +56,7 @@ int32_t find_empty(uintptr_t addr, uint32_t group_label){
 
 //根据地址更新cache_row
 uint32_t* update_cacheline(uintptr_t addr, uint32_t group_label, uint32_t line){
+  update_line_cost_increase(5);
   uint32_t* ret_addr;
   whole_cache[group_label][line].valid_bit = true;
 	whole_cache[group_label][line].tag_bit = addr >> (mm_group_label_bit+mm_block_addr_bit);
@@ -94,6 +106,7 @@ uint32_t cache_read(uintptr_t addr) {
   //未命中
   else{
     miss_increase(1);
+    uint64_t miss_begin = clock();
     int32_t find_empty_line = find_empty(addr, cache_group_label);
     //组中有空行
     if(find_empty_line>=0){
@@ -105,6 +118,8 @@ uint32_t cache_read(uintptr_t addr) {
       uint32_t rand_line = rand()%cache_lines_per_group;
       ret_addr = rand_replace_line(addr,cache_group_label,rand_line);
     }
+    uint64_t miss_end = clock();
+    cache_miss_cost_increase(miss_end-miss_begin);
   }
   return *ret_addr;
 }
@@ -135,6 +150,7 @@ void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
   //缺失
   else{
     miss_increase(1);
+    uint64_t miss_begin = clock();
     int32_t find_empty_line = find_empty(addr, cache_group_label);
     //组中有空行
     if(find_empty_line>=0){
@@ -151,6 +167,8 @@ void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
       rand_replace_line(addr,cache_group_label,rand_line);
       write_data(addr, cache_group_label, rand_line, data, wmask); 
     }
+    uint64_t miss_end = clock();
+    cache_miss_cost_increase(miss_end-miss_begin);
   }
 }
 
@@ -204,8 +222,10 @@ void init_cache(int total_size_width, int associativity_width) {
 }
 
 void display_statistic(void) {
-  printf("cache hit count is: %ld\n", hit_cnt);
-  printf("cache miss count is: %ld\n", miss_cnt);
   printf("hit rate: %f\n",(float)hit_cnt/(hit_cnt+miss_cnt));
-  printf("cycle_cnt: %ld\n", cycle_cnt);
+  printf("hit judge cost: %ld\n", find_hit_cnt);
+  printf("empty judge cost: %ld\n", find_empty_cnt);
+  printf("update line cost: %ld\n", update_line_cost);
+  printf("cache complex: %ld\n",find_hit_cnt+find_empty_cnt+update_line_cost);
+  printf("cache_miss_cost: %f ms", (double)cache_miss_cost/1000);
 }
