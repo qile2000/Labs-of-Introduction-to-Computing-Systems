@@ -134,8 +134,7 @@ void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
     else{
       srand(clock());
       uint32_t rand_line = rand()%cache_lines_per_group;
-      uint32_t* temp = NULL;
-      temp = rand_replace_line(addr,cache_group_label,rand_line);
+      rand_replace_line(addr,cache_group_label,rand_line);
       write_data(addr, cache_group_label, rand_line, data, wmask); 
     }
   }
