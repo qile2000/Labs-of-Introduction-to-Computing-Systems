@@ -72,7 +72,7 @@ uint32_t cache_read(uintptr_t addr) {
   uint32_t* ret_addr=NULL;
 
   //获得cache组号
-  uint32_t cache_group_label= (addr>>mm_block_addr_bit)%mm_group_label_bit;
+  uint32_t cache_group_label= (addr>>mm_block_addr_bit)%exp2(mm_group_label_bit);
 
   //获得标记位
   uint32_t mm_tag = addr >> (mm_block_addr_bit+mm_group_label_bit);
