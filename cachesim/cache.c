@@ -207,5 +207,5 @@ void display_statistic(void) {
   printf("cache hit count is: %ld\n", hit_cnt);
   printf("cache miss count is: %ld\n", miss_cnt);
   printf("hit rate: %f\n",(float)hit_cnt/(hit_cnt+miss_cnt));
-  printf("cycle_cnt: %d\n", cycle_cnt);
+  printf("cycle_cnt: %ld\n", cycle_cnt);
 }
