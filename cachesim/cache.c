@@ -113,26 +113,21 @@ void write_data(uintptr_t addr, uint32_t group_label, uint32_t line, uint32_t da
 // 例如当`wmask`为`0xff`时, 只写入低8比特
 // 若缺失, 需要从先内存中读入数据
 void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
-  printf("cache_write\n");
+
   uint32_t cache_group_label= (addr>>mm_block_addr_bit)%exp2(mm_group_label_bit);
-  printf("group_label: %d\n",cache_group_label);
+
   uint32_t mm_tag = addr >> (mm_block_addr_bit+mm_group_label_bit);
-  printf("mm_tag: %d\n",mm_tag);
+
   int32_t find_hit_line = find_hit_tag(addr,cache_group_label,mm_tag);
-  printf("find_lit_line: %d\n", find_hit_line);
   //命中
   if(find_hit_line>=0){
-    printf("hit\n");
     write_data(addr, cache_group_label, find_hit_line, data, wmask); 
   }
   //缺失
   else{
-    printf("miss\n");
     int32_t find_empty_line = find_empty(addr, cache_group_label);
-    printf("find_empty_line: %d",find_empty_line);
     //组中有空行
     if(find_empty_line>=0){
-      printf("have empty line\n");
       whole_cache[cache_group_label][find_empty_line].valid_bit = true;
 	    whole_cache[cache_group_label][find_empty_line].tag_bit = addr >> (mm_group_label_bit+mm_block_addr_bit);
 	    whole_cache[cache_group_label][find_empty_line].block_label = (addr >> mm_block_addr_bit);
@@ -141,7 +136,6 @@ void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
     }
     //组中已满
     else{
-      printf("line full, replace\n");
       srand(clock());
       uint32_t rand_line = rand()%cache_lines_per_group;
       rand_replace_line(addr,cache_group_label,rand_line);
