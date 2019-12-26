@@ -119,6 +119,7 @@ void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
   uint32_t mm_tag = addr >> (mm_block_addr_bit+mm_group_label_bit);
   printf("mm_tag: %d\n",mm_tag);
   uint32_t find_hit_line = find_hit_tag(addr,cache_group_label,mm_tag);
+  printf("find_lit_line: %d\n", find_hit_line);
   //命中
   if(find_hit_line>=0){
     write_data(addr, cache_group_label, find_hit_line, data, wmask); 
