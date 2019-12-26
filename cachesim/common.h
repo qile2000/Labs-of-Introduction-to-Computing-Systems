@@ -14,7 +14,7 @@
 #define BLOCK_SIZE exp2(BLOCK_WIDTH)
 
 #define TOTAL_SIZE_WIDTH 14
-#define ASSOCIATIVITY_WIDTH 2
+#define ASSOCIATIVITY_WIDTH 4
 
 //命中数量
 uint32_t hit_num;
