@@ -23,6 +23,7 @@ void miss_increase(int n) { miss_cnt += n; }
 
 //是否有匹配的有效tag
 int32_t find_hit_tag(uintptr_t addr, uint32_t group_label, uint32_t mm_tag){
+  cycle_increase(cache_lines_per_group);
   for(int i=0; i<cache_lines_per_group; i++){
     if((mm_tag==whole_cache[group_label][i].tag_bit) &&
        (whole_cache[group_label][i].valid_bit==1)){
@@ -206,4 +207,5 @@ void display_statistic(void) {
   printf("cache hit count is: %ld\n", hit_cnt);
   printf("cache miss count is: %ld\n", miss_cnt);
   printf("hit rate: %f\n",(float)hit_cnt/(hit_cnt+miss_cnt));
+  printf("cycle_cnt: %d\n", cycle_cnt);
 }
